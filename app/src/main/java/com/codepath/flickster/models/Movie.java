@@ -1,7 +1,5 @@
 package com.codepath.flickster.models;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +16,7 @@ public class Movie {
         return String.format("https://image.tmdb.org/t/p/w342/%s",posterPath);
     }
     public String getBackdropPath() {
-        Log.d("DEBUG","BackP-> "+backdropPath);
+        //Log.d("DEBUG","BackP-> "+backdropPath);
         return String.format("https://image.tmdb.org/t/p/w342/%s",backdropPath);
     }
     public String getOriginalTitle() {
@@ -47,6 +45,7 @@ public class Movie {
         for(int x=0; x<array.length(); x++){
             try {
                 results.add(new Movie(array.getJSONObject(x)));
+                //Log.d("DEBUG","M["+x+"] = "+results.get(x).originalTitle);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
