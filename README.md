@@ -39,7 +39,9 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<a href="http://imgur.com/ooGZSzW"><img src="http://i.imgur.com/ooGZSzW.gif" title="source: imgur.com" /></a>
+[url=http://imgur.com/ooGZSzW][img]http://i.imgur.com/ooGZSzW.gif[/img][/url]
+
+<a href="http://imgur.com/ooGZSzW"><img src="http://i.imgur.com/ooGZSzW.gif" title="Flickster" /></a>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
