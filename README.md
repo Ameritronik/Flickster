@@ -39,7 +39,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-.
+http://i.imgur.com/ooGZSzW.gif
 
 <a href="http://imgur.com/ooGZSzW"><img src="http://i.imgur.com/ooGZSzW.gif" title="Flickster" /></a>
 
