@@ -5,7 +5,9 @@
     style="@style/Base.TextAppearance.AppCompat.Inverse"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#3F3F3F">
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    android:background="@drawable/smpl_bkgd_brdr">
 
     <ImageView
         android:id="@+id/ivMovieImage"
