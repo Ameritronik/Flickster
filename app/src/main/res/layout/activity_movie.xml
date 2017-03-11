@@ -6,13 +6,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.flickster.MovieActivity">
+    tools:context="com.codepath.flickster.activities.MovieActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lvMovies"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:drawable/alert_dark_frame"
+        android:layout_margin="5dp"
+        android:background="@drawable/bg_gradient_1"
+        android:outlineProvider="background"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp" />

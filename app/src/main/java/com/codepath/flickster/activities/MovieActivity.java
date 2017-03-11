@@ -1,11 +1,11 @@
-package com.codepath.flickster;
+package com.codepath.flickster.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
+import com.codepath.flickster.R;
 import com.codepath.flickster.adapters.ComplexRecyclerViewAdapter;
 import com.codepath.flickster.models.Movie;
 import com.jakewharton.picasso.OkHttp3Downloader;
@@ -20,15 +20,12 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import cz.msebera.android.httpclient.Header;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import cz.msebera.android.httpclient.Header;
-// If the boolean UseoKHTTP is set to true, the Header import gets thrown out
-// copy the line below into the import group to avoid error
-// import cz.msebera.android.httpclient.Header;
 
 public class MovieActivity extends AppCompatActivity {
 
@@ -64,17 +61,14 @@ public class MovieActivity extends AppCompatActivity {
                     String responseData = response.body().string();
                     try {
                         JSONObject jindata = new JSONObject(responseData);
-                        //Log.d("DEBUG",jindata.toString());
                         if (jindata != null) {
-                            movieJsonResults = jindata.getJSONArray("results");
-                            Log.d("DEBUG", "  Done gathering data");
-                            //Log.d("DEBUG", movieJsonResults.toString());
+                            movieJsonResults = jindata.getJSONArray("results");;
                             movies.addAll(Movie.fromJSONArray(jindata.getJSONArray("results")));
                             // Run view-related code back on the main thread
                             MovieActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    movieAdapter = new ComplexRecyclerViewAdapter(MovieActivity.this, movies);
+                                    movieAdapter.notifyDataSetChanged();
                                 }
                             });
                         }
@@ -104,5 +98,6 @@ public class MovieActivity extends AppCompatActivity {
                 }
             });
         }
+
     }
 }

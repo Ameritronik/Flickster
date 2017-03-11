@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Base.TextAppearance.AppCompat.Inverse"
     android:id="@+id/lvNonPopMovieLand"
+    style="@style/Base.TextAppearance.AppCompat.Inverse"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/nop_bkgd_brdr"
     android:paddingBottom="10dp"
-    android:paddingTop="10dp"
-    android:background="@drawable/nop_bkgd_brdr"    >
+    android:paddingTop="10dp">
 
     <ImageView
         android:id="@+id/ivMovieImageNopLand"
@@ -26,24 +26,23 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginEnd="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginStart="10dp"
+        android:layout_toEndOf="@+id/ivMovieImageNopLand"
+        android:layout_toRightOf="@+id/ivMovieImageNopLand"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textSize="24sp"
         tools:ignore="RtlHardcoded"
-        tools:text="@string/textview"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/ivMovieImageNopLand"
-        android:layout_toEndOf="@+id/ivMovieImageNopLand" />
+        tools:text="@string/textview" />
 
     <TextView
         android:id="@+id/tvOverview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvTitle"
         android:layout_alignStart="@+id/tvTitle"
         android:layout_below="@+id/tvTitle"
         android:layout_marginLeft="1dp"

@@ -1,17 +1,20 @@
 package com.codepath.flickster.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.codepath.flickster.R;
+import com.codepath.flickster.activities.MovieDetailActivity;
 import com.codepath.flickster.models.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -61,7 +64,7 @@ public class ComplexRecyclerViewAdapter extends
 
     private void configureDefaultViewHolder(SimpleViewHolder holder, int position) {
         // Get the data model based on position
-        Movie movie = mMovies.get(position);
+        final Movie movie = mMovies.get(position);
         // Set item views based on your views and data model
         TextView tvTitle =  holder.tvTitle;
         TextView tvOverview = holder.tvOverview;
@@ -90,11 +93,29 @@ public class ComplexRecyclerViewAdapter extends
                     .transform(new RoundedCornersTransformation(10, 10))
                     .into(holder.ivImage);
         }
+        // Now look for any key click on a movie for detailed screen view
+        // need to pass the following
+        // ivMovieDetailImage tvTitle releaseDate ratingBar tvOverview
+        ImageView movieClicked = (ImageView) holder.ivImage;
+        movieClicked.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Bundle dataBundle = new Bundle();
+                // replace backdrop path with youtube URL
+                dataBundle.putInt("mRate",(int) ((movie.getRateing()/2.0)+0.5));
+                dataBundle.putString("mURL", movie.getBackdropPath());
+                dataBundle.putString("mTitle", movie.getOriginalTitle());
+                dataBundle.putString("mRelDate",movie.getReleaseDate());
+                dataBundle.putString("mOverview",movie.getOverView());
+                Intent intent = new Intent(mContext,MovieDetailActivity.class);
+                intent.putExtras(dataBundle);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     private void configureViewHolder1(PopViewHolder holder, int position) {
         // Get the data model based on position
-        Movie movie = mMovies.get(position);
+        final Movie movie = mMovies.get(position);
         // Set item views based on your views and data model
         TextView tvTitle =  holder.tvPopTitle;
         TextView tvOverview = holder.tvPopOverview;
@@ -102,8 +123,6 @@ public class ComplexRecyclerViewAdapter extends
         tvTitle.setText(movie.getOriginalTitle());
         tvOverview.setTextColor(Color.GREEN);
         tvOverview.setText(movie.getOverView());
-        String pPath = movie.getPosterPath().toString();
-        //Log.d("DEBUG","CH1-> "+pPath);
         // Switch images between Poster for portrait and Backdrop for landscape
         int orientation = getContext().getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -124,11 +143,29 @@ public class ComplexRecyclerViewAdapter extends
                     .transform(new RoundedCornersTransformation(10, 10))
                     .into(holder.ivPopImage);
         }
+        ImageView movieClicked = (ImageView) holder.ivPopImage;
+        // Now look for any key click on a movie for detailed screen view
+        // need to pass the following
+        // ivMovieDetailImage tvTitle releaseDate ratingBar tvOverview
+        movieClicked.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Bundle dataBundle = new Bundle();
+                // replace backdrop path with youtube URL
+                dataBundle.putInt("mRate",(int) ((movie.getRateing()/2.0)+0.5));
+                dataBundle.putString("mURL", movie.getBackdropPath());
+                dataBundle.putString("mTitle", movie.getOriginalTitle());
+                dataBundle.putString("mRelDate",movie.getReleaseDate());
+                dataBundle.putString("mOverview",movie.getOverView());
+                Intent intent = new Intent(mContext,MovieDetailActivity.class);
+                intent.putExtras(dataBundle);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     private void configureViewHolder2(NopViewHolder holder, int position) {
         // Get the data model based on position
-        Movie movie = mMovies.get(position);
+        final Movie movie = mMovies.get(position);
         // Set item views based on your views and data model
         TextView tvTitle =  holder.tvNopTitle;
         TextView tvOverview = holder.tvNopOverview;
@@ -157,6 +194,24 @@ public class ComplexRecyclerViewAdapter extends
                     .transform(new RoundedCornersTransformation(10, 10))
                     .into(holder.ivNopImage);
         }
+        // Now look for any key click on a movie for detailed screen view
+        // need to pass the following
+        // ivMovieDetailImage tvTitle releaseDate ratingBar tvOverview
+        ImageView movieClicked = (ImageView) holder.ivNopImage;
+        movieClicked.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                Bundle dataBundle = new Bundle();
+                // replace backdrop path with youtube URL
+                dataBundle.putInt("mRate",(int) ((movie.getRateing()/2.0)+0.5));
+                dataBundle.putString("mURL", movie.getBackdropPath());
+                dataBundle.putString("mTitle", movie.getOriginalTitle());
+                dataBundle.putString("mRelDate",movie.getReleaseDate());
+                dataBundle.putString("mOverview",movie.getOverView());
+                Intent intent = new Intent(mContext,MovieDetailActivity.class);
+                intent.putExtras(dataBundle);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -210,7 +265,7 @@ public class ComplexRecyclerViewAdapter extends
     public ComplexRecyclerViewAdapter(Context context, ArrayList<Movie> movies) {
         mMovies = movies;
         mContext = context;
-        Log.d("DEBUG","Adapt -> "+mMovies.toString());
+        //Log.d("DEBUG","Adapt -> "+mMovies.toString());
     }
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
@@ -220,6 +275,7 @@ public class ComplexRecyclerViewAdapter extends
         public TextView tvTitle;
         public TextView tvOverview;
         public ImageView ivImage;
+        private RatingBar ratingBar;
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview
         public SimpleViewHolder(View itemView) {
@@ -228,6 +284,7 @@ public class ComplexRecyclerViewAdapter extends
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvOverview = (TextView) itemView.findViewById(R.id.tvOverview);
+            ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
             // find image view // clear out image if set
             int orientation = getContext().getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -243,11 +300,13 @@ public class ComplexRecyclerViewAdapter extends
         private TextView tvPopTitle;
         private TextView tvPopOverview;
         private ImageView ivPopImage;
+        private RatingBar ratingBar;
 
         public PopViewHolder(View itemView) {
             super(itemView);
             tvPopTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvPopOverview = (TextView) itemView.findViewById(R.id.tvOverview);
+            ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
             // find image view // clear out image if set
             int orientation = getContext().getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -287,11 +346,13 @@ public class ComplexRecyclerViewAdapter extends
         private TextView tvNopTitle;
         private TextView tvNopOverview;
         private ImageView ivNopImage;
+        private RatingBar ratingBar;
 
         public NopViewHolder(View itemView) {
             super(itemView);
             tvNopTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvNopOverview = (TextView) itemView.findViewById(R.id.tvOverview);
+            ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
             // find image view // clear out image if set
             int orientation = getContext().getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -326,5 +387,6 @@ public class ComplexRecyclerViewAdapter extends
             this.ivNopImage = NopImage;
         }
     }
+
 }
 

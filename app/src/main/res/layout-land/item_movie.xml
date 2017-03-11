@@ -5,9 +5,9 @@
     style="@style/Base.TextAppearance.AppCompat.Inverse"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/smpl_bkgd_brdr"
     android:paddingBottom="10dp"
-    android:paddingTop="10dp"
-    android:background="@drawable/smpl_bkgd_brdr">
+    android:paddingTop="10dp">
 
     <ImageView
         android:id="@+id/ivMovieImageLand"
@@ -33,10 +33,11 @@
         android:id="@+id/tvOverview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/tvTitle"
         android:layout_alignStart="@+id/tvTitle"
         android:layout_below="@+id/tvTitle"
+        android:layout_marginRight="10dp"
         android:textSize="12sp"
+        tools:ignore="RtlHardcoded"
         tools:text="When a wounded Christian Grey tries to entice a cautious Ana Steele back into his life, she demands a new arrangement before she will give him another chance. As the two begin to build trust and find stability, shadowy figures from Christian’s past start to circle the couple, determined to destroy their hopes for a future together." />
 
 </RelativeLayout>

@@ -2,22 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Base.TextAppearance.AppCompat.Inverse"
     android:id="@+id/lvPopMovie"
+    style="@style/Base.TextAppearance.AppCompat.Inverse"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/pop_bkgd_brdr"
     android:paddingBottom="10dp"
-    android:paddingTop="10dp"
-    android:background="@drawable/pop_bkgd_brdr">
+    android:paddingTop="10dp">
 
     <ImageView
         android:id="@+id/ivMovieImagePop"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        tools:ignore="ContentDescription"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="64dp"
+        android:layout_marginStart="64dp"
+        tools:ignore="ContentDescription,RtlHardcoded"
         tools:src="@mipmap/ic_launcher" />
 
     <TextView
@@ -27,10 +29,9 @@
         android:layout_below="@+id/ivMovieImagePop"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginStart="10dp"
+        android:paddingTop="5dp"
         android:textSize="24sp"
         tools:ignore="RtlHardcoded"
         tools:text="@string/textview" />
@@ -39,13 +40,13 @@
         android:id="@+id/tvOverview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tvTitle"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="17dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:textSize="14sp"
+        tools:ignore="RtlHardcoded"
         tools:text="When a wounded Christian Grey tries to entice a cautious Ana Steele back into his life, she demands a new arrangement before she will give him another chance. As the two begin to build trust and find stability, shadowy figures from Christian’s past start to circle the couple, determined to destroy their hopes for a future together." />
 
 </RelativeLayout>

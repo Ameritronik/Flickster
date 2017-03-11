@@ -2,4 +2,5 @@
     <string name="app_name">Flickster</string>
     <string name="textview">Fifty Shades Darker</string>
     <string name="app_title">Flickster</string>
+    <string name="releaseDate">Release Date</string>
 </resources>

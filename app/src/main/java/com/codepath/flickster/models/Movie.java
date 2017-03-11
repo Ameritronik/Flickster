@@ -1,7 +1,5 @@
 package com.codepath.flickster.models;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Created by hkanekal on 3/5/2017.
+ *  Youtube api key: AIzaSyA4bc4yZfIBjfVMTJtvZdQ3C1gmE78DJzg
  */
 
 public class Movie {
@@ -19,6 +18,7 @@ public class Movie {
     String originalTitle;
     String overView;
     float rateing;
+    String releaseDate;
 
     public String getPosterPath() {
         //Log.d("DEBUG","PostP-> "+posterPath);
@@ -36,6 +36,10 @@ public class Movie {
         return overView;
     }
 
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
     public float getRateing() {
         return rateing;
     }
@@ -46,27 +50,14 @@ public class Movie {
         this.overView = jsonObject.getString("overview");
         this.backdropPath = jsonObject.getString("backdrop_path");
         this.rateing = Float.valueOf(jsonObject.getString("vote_average").toString());
+        this.releaseDate = jsonObject.getString("release_date");
     }
 
     public static ArrayList<Movie> fromJSONArray(JSONArray array){
         ArrayList<Movie> results = new ArrayList<>();
-
-        //Log.d("DEBUG","Array Len = "+array.length()+" M -> "+array);
-        //for (int f=0;f<array.length();f++) {
-        //    results.add(f,null);
-        //}
         for(int x=0; x<array.length(); x++){
             try {
-                /*
-                String c = array.getString(x);
-                //Log.d("DEBUG","Ac: "+c);
-                JSONObject m = new JSONObject(c);
-                Log.d("DEBUG","Mm: "+m);
-                Movie mM = new Movie(m);
-                results.set(x,mM);
-                */
                 results.add(new Movie(array.getJSONObject(x)));
-                Log.d("DEBUG","res@x -> "+results.get(x).toString());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
