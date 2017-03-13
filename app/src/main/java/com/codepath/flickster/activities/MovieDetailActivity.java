@@ -1,9 +1,11 @@
 package com.codepath.flickster.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -23,7 +25,13 @@ import static com.codepath.flickster.R.drawable.my_placeholder_error;
 public class MovieDetailActivity extends AppCompatActivity{
 
     // ivMovieDetailImage tvTitle releaseDate ratingBar tvOverview
-    String mURL, mTitle,mRelDate,mOverview;
+    String mURL = null;
+    String mTitle = null;
+    String mRelDate = null;
+    String mOverview = null;
+    String mId = null;
+    String mName = null;
+    String mKey = null;
     int rate;
 
     @Override
@@ -35,11 +43,16 @@ public class MovieDetailActivity extends AppCompatActivity{
         mRelDate = extras.getString("mRelDate");
         rate = extras.getInt("mRate");
         mOverview = extras.getString("mOverview");
+        mId = extras.getString("mId");
+        mName = extras.getString("mName");
+        mKey = extras.getString("mKey");
         // now that you have all of the items display them
-        displayMovieDetails(this, mURL,mTitle,mRelDate,rate,mOverview);
+        displayMovieDetails(this, mURL,mTitle,mRelDate,rate,mOverview,mId,mName,mKey);
     }
 
-    private void displayMovieDetails(Context context, String mURL, String mTitle, String mRelDate, int rate, String mOverview) {
+    private void displayMovieDetails(final Context context, String mURL, String mTitle,
+                                     String mRelDate, int rate, String mOverview,
+                                     final String mId, final String mName, final String mKey) {
         setContentView(R.layout.activity_moviedisplay);
         getSupportActionBar().hide();
         TextView tvTitle =  (TextView) findViewById(R.id.tvTitle);
@@ -63,5 +76,19 @@ public class MovieDetailActivity extends AppCompatActivity{
                     .error(my_placeholder_error)
                     .transform(new RoundedCornersTransformation(10, 10))
                     .into(ivImage);
+        if(mKey != null) {
+            ivImage.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    Bundle dataBundle = new Bundle();
+                    // replace backdrop path with youtube URL
+                    dataBundle.putString("mId", mId);
+                    dataBundle.putString("mName", mName);
+                    dataBundle.putString("mKey", mKey);
+                    Intent intent = new Intent(context, QuickPlayActivity.class);
+                    intent.putExtras(dataBundle);
+                    context.startActivity(intent);
+                }
+            });
+        }
     }
 }

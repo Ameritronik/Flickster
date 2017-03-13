@@ -61,17 +61,14 @@ public class MovieActivity extends AppCompatActivity {
                     String responseData = response.body().string();
                     try {
                         JSONObject jindata = new JSONObject(responseData);
-                        if (jindata != null) {
-                            movieJsonResults = jindata.getJSONArray("results");;
-                            movies.addAll(Movie.fromJSONArray(jindata.getJSONArray("results")));
+                        movieJsonResults = jindata.getJSONArray("results");;
+                        movies.addAll(Movie.fromJSONArray(jindata.getJSONArray("results")));
                             // Run view-related code back on the main thread
-                            MovieActivity.this.runOnUiThread(new Runnable() {
+                        MovieActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    movieAdapter.notifyDataSetChanged();
-                                }
-                            });
-                        }
+                                    movieAdapter.notifyDataSetChanged();}
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

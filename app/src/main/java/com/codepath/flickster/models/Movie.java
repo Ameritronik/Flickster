@@ -19,6 +19,8 @@ public class Movie {
     String overView;
     float rateing;
     String releaseDate;
+    String movieId;
+
 
     public String getPosterPath() {
         //Log.d("DEBUG","PostP-> "+posterPath);
@@ -31,19 +33,19 @@ public class Movie {
     public String getOriginalTitle() {
         return originalTitle;
     }
-
     public String getOverView() {
         return overView;
     }
-
     public String getReleaseDate() {
         return releaseDate;
     }
-
     public float getRateing() {
         return rateing;
     }
-
+    public String getMovieId() {
+        //Log.d("DEBUG","BackP-> "+backdropPath);
+        return movieId;
+    }
     public Movie(JSONObject jsonObject) throws JSONException {
         this.posterPath = jsonObject.getString("poster_path");
         this.originalTitle = jsonObject.getString("original_title");
@@ -51,8 +53,8 @@ public class Movie {
         this.backdropPath = jsonObject.getString("backdrop_path");
         this.rateing = Float.valueOf(jsonObject.getString("vote_average").toString());
         this.releaseDate = jsonObject.getString("release_date");
+        this.movieId = jsonObject.getString("id");
     }
-
     public static ArrayList<Movie> fromJSONArray(JSONArray array){
         ArrayList<Movie> results = new ArrayList<>();
         for(int x=0; x<array.length(); x++){
@@ -64,5 +66,4 @@ public class Movie {
         }
         return results;
     }
-
 }

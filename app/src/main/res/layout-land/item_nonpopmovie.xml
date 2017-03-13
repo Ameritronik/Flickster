@@ -36,8 +36,13 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textSize="24sp"
-        tools:ignore="RtlHardcoded"
-        tools:text="@string/textview" />
+        tools:ignore="RtlHardcoded,UnusedAttribute"
+        tools:text="@string/textview"
+        android:background="@drawable/nop_bkgd"
+        android:elevation="1dp"
+        android:outlineProvider="background"
+        android:paddingTop="5dp"
+        android:textAlignment="center"/>
 
     <TextView
         android:id="@+id/tvOverview"

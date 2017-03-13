@@ -21,6 +21,10 @@
             android:name=".activities.MovieDetailActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name=".activities.QuickPlayActivity"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

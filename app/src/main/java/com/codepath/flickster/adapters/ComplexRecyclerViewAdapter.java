@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,24 @@ import android.widget.TextView;
 
 import com.codepath.flickster.R;
 import com.codepath.flickster.activities.MovieDetailActivity;
+import com.codepath.flickster.activities.QuickPlayActivity;
 import com.codepath.flickster.models.Movie;
+import com.codepath.flickster.models.YouTubeURL;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 import static com.codepath.flickster.R.drawable.my_placeholder;
 import static com.codepath.flickster.R.drawable.my_placeholder_error;
@@ -30,9 +43,11 @@ import static com.codepath.flickster.R.drawable.my_placeholder_error;
  */
 
 public class ComplexRecyclerViewAdapter extends
-        RecyclerView.Adapter<RecyclerView.ViewHolder> {
+        RecyclerView.Adapter<RecyclerView.ViewHolder>{
     // Store a member variable for the contacts
     private ArrayList<Movie> mMovies;
+    ArrayList<YouTubeURL> youTubeUrls = new ArrayList<YouTubeURL>();
+    private static int DELAY = 10;
     // Store the context for easy access
     private static Context mContext;
     private final int POP = 0, NOP = 1, SMPL =2; // Pop = popular Nop = Not popular
@@ -113,13 +128,14 @@ public class ComplexRecyclerViewAdapter extends
         });
     }
 
-    private void configureViewHolder1(PopViewHolder holder, int position) {
+    private void configureViewHolder1(PopViewHolder holder, final int position) {
         // Get the data model based on position
         final Movie movie = mMovies.get(position);
         // Set item views based on your views and data model
+        ImageView movieClicked = (ImageView) holder.ivPopImage;
         TextView tvTitle =  holder.tvPopTitle;
         TextView tvOverview = holder.tvPopOverview;
-        tvTitle.setTextColor(Color.YELLOW);
+        tvTitle.setTextColor(Color.WHITE);
         tvTitle.setText(movie.getOriginalTitle());
         tvOverview.setTextColor(Color.GREEN);
         tvOverview.setText(movie.getOverView());
@@ -143,11 +159,26 @@ public class ComplexRecyclerViewAdapter extends
                     .transform(new RoundedCornersTransformation(10, 10))
                     .into(holder.ivPopImage);
         }
-        ImageView movieClicked = (ImageView) holder.ivPopImage;
         // Now look for any key click on a movie for detailed screen view
         // need to pass the following
-        // ivMovieDetailImage tvTitle releaseDate ratingBar tvOverview
-        movieClicked.setOnClickListener(new View.OnClickListener() {
+        // ivMovieDetailImage tvTitle releaseDate ratingBar tvOverview movidId
+        movieClicked.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view) {
+                Bundle dataBundle = new Bundle();
+                // replace backdrop path with youtube URL
+                dataBundle.putString("mId", movie.getMovieId());
+                dataBundle.putString("mName", movie.getOriginalTitle());
+                String rmKey = getYouTubeKey(position);
+                if(rmKey == null) { rmKey = getYouTubeKey(position); } // retry
+                dataBundle.putString("mKey", rmKey);
+                if(rmKey != null ) {
+                    Intent intent = new Intent(mContext, QuickPlayActivity.class);
+                    intent.putExtras(dataBundle);
+                    mContext.startActivity(intent);
+                }
+            }
+        });
+        tvTitle.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Bundle dataBundle = new Bundle();
                 // replace backdrop path with youtube URL
@@ -156,6 +187,9 @@ public class ComplexRecyclerViewAdapter extends
                 dataBundle.putString("mTitle", movie.getOriginalTitle());
                 dataBundle.putString("mRelDate",movie.getReleaseDate());
                 dataBundle.putString("mOverview",movie.getOverView());
+                dataBundle.putString("mId", null);
+                dataBundle.putString("mName", null);
+                dataBundle.putString("mKey", null);
                 Intent intent = new Intent(mContext,MovieDetailActivity.class);
                 intent.putExtras(dataBundle);
                 mContext.startActivity(intent);
@@ -163,7 +197,53 @@ public class ComplexRecyclerViewAdapter extends
         });
     }
 
-    private void configureViewHolder2(NopViewHolder holder, int position) {
+    public String getYouTubeKey(int position) {
+        String uTubeKey = "";
+        final boolean[] urlListAdded = {false};
+        // Get the data model based on position
+        final Movie movie = mMovies.get(position);
+        // Assemble You Tube URL
+        final String[] uTubeURL1 = {"https://api.themoviedb.org/3/movie/"};
+        String uTubeURL2 = movie.getMovieId();
+        String uTubeURL3 = "/videos?api_key=a07e22bc18f5cb106bfe4cc1f83ad8ed";
+        String uTubeURL = uTubeURL1[0] +uTubeURL2+uTubeURL3;
+        final OkHttpClient client = new OkHttpClient();
+        Request reqUTubeURLs = new okhttp3.Request.Builder().url(uTubeURL).build();
+        client.newCall(reqUTubeURLs).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+            }
+            @Override
+            public void onResponse(Call call, final Response response) throws IOException {
+
+                String responseData = response.body().string();
+                try {
+                    JSONObject jindata = new JSONObject(responseData);
+                    JSONArray movieJsonUTubeResults = new JSONArray();
+                    movieJsonUTubeResults = jindata.getJSONArray("results");
+                    youTubeUrls.addAll(YouTubeURL.fromJSONArray(movieJsonUTubeResults));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        int waitcount = 0;
+        while((youTubeUrls.size() == 0) &&(waitcount < 10000000)) {
+            waitcount++;
+        }
+        for(int x=0;x<youTubeUrls.size();x++) {
+            if (youTubeUrls.get(x).getYTKey() != null) {
+                uTubeKey = youTubeUrls.get(x).getYTKey();
+            } else { uTubeKey = "NoKey"; Log.d("DEBUG","CRVA-> empty"+ uTubeKey);}
+        }
+        for (int k =0; k< youTubeUrls.size(); k++) {
+            youTubeUrls.remove(k);
+        }
+        youTubeUrls = new ArrayList<YouTubeURL>();
+        return uTubeKey;
+    }
+
+    private void configureViewHolder2(NopViewHolder holder, final int position) {
         // Get the data model based on position
         final Movie movie = mMovies.get(position);
         // Set item views based on your views and data model
@@ -173,7 +253,6 @@ public class ComplexRecyclerViewAdapter extends
         tvTitle.setText(movie.getOriginalTitle());
         tvOverview.setTextColor(Color.YELLOW);
         tvOverview.setText(movie.getOverView());
-        //Log.d("DEBUG","Recyc MT-> "+movie.getOriginalTitle());
         // Switch images between Poster for portrait and Backdrop for landscape
         int orientation = getContext().getResources().getConfiguration().orientation;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -194,11 +273,7 @@ public class ComplexRecyclerViewAdapter extends
                     .transform(new RoundedCornersTransformation(10, 10))
                     .into(holder.ivNopImage);
         }
-        // Now look for any key click on a movie for detailed screen view
-        // need to pass the following
-        // ivMovieDetailImage tvTitle releaseDate ratingBar tvOverview
-        ImageView movieClicked = (ImageView) holder.ivNopImage;
-        movieClicked.setOnClickListener(new View.OnClickListener() {
+        tvTitle.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 Bundle dataBundle = new Bundle();
                 // replace backdrop path with youtube URL
@@ -207,9 +282,16 @@ public class ComplexRecyclerViewAdapter extends
                 dataBundle.putString("mTitle", movie.getOriginalTitle());
                 dataBundle.putString("mRelDate",movie.getReleaseDate());
                 dataBundle.putString("mOverview",movie.getOverView());
-                Intent intent = new Intent(mContext,MovieDetailActivity.class);
-                intent.putExtras(dataBundle);
-                mContext.startActivity(intent);
+                dataBundle.putString("mId", movie.getMovieId());
+                dataBundle.putString("mName", movie.getOriginalTitle());
+                String rmKey = getYouTubeKey(position);
+                if(rmKey == null) { rmKey = getYouTubeKey(position); } // retry
+                dataBundle.putString("mKey", rmKey);
+                if(rmKey != null ) {
+                    Intent intent = new Intent(mContext, MovieDetailActivity.class);
+                    intent.putExtras(dataBundle);
+                    mContext.startActivity(intent);
+                }
             }
         });
     }
@@ -267,6 +349,7 @@ public class ComplexRecyclerViewAdapter extends
         mContext = context;
         //Log.d("DEBUG","Adapt -> "+mMovies.toString());
     }
+
     // Provide a direct reference to each of the views within a data item
     // Used to cache the views within the item layout for fast access
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
