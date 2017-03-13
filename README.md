@@ -23,10 +23,10 @@ The following **bonus** features are implemented:
 
 * [X] Allow user to view details of the movie including ratings and popularity within a separate activity or dialog fragment.
 * [X] When viewing a popular movie (i.e. a movie voted for more than 5 stars) the video should show the full backdrop image as the layout.  Uses [Heterogenous ListViews](http://guides.codepath.com/android/Implementing-a-Heterogenous-ListView) or [Heterogenous RecyclerView](http://guides.codepath.com/android/Heterogenous-Layouts-inside-RecyclerView) to show different layouts.
-* [ ] Allow video trailers to be played in full-screen using the YouTubePlayerView.
-    * [ ] Overlay a play icon for videos that can be played.
-    * [ ] More popular movies should start a separate activity that plays the video immediately.
-    * [ ] Less popular videos rely on the detail page should show ratings and a YouTube preview.
+* [X] Allow video trailers to be played in full-screen using the YouTubePlayerView.
+    * [X] Overlay a play icon for videos that can be played.
+    * [X] More popular movies should start a separate activity that plays the video immediately.
+    * [X] Less popular videos rely on the detail page should show ratings and a YouTube preview.
 * [ ] Apply the popular [Butterknife annotation library](http://guides.codepath.com/android/Reducing-View-Boilerplate-with-Butterknife) to reduce boilerplate code.
 * [X] Apply rounded corners for the poster or background images using [Picasso transformations](https://guides.codepath.com/android/Displaying-Images-with-the-Picasso-Library#other-transformations)
 * [X] Replaced android-async-http network client with the popular [OkHttp](http://guides.codepath.com/android/Using-OkHttp) networking libraries.
@@ -39,24 +39,10 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-http://imgur.com/ooGZSzW
+.
+http://i.imgur.com/pfL5Frw.gif
 
-http://i.imgur.com/ooGZSzW.gif
-
-http://i.imgur.com/ooGZSzW.gifv
-
-[Imgur](http://i.imgur.com/ooGZSzW.gifv)
-
-<a href="http://imgur.com/ooGZSzW"><img src="http://i.imgur.com/ooGZSzW.gif" title="Flickster" /></a>
-
-[img]http://i.imgur.com/ooGZSzW.gif[/img]
-
-[url=http://imgur.com/ooGZSzW][img]http://i.imgur.com/ooGZSzW.gif[/img][/url]
-
-Here is the next step that includes a separate activity showing movie details.
-This version also includes OkHTTP client:
-
-<a href="http://imgur.com/kQXQ9lj"><img src="http://i.imgur.com/kQXQ9lj.gif" title="Includes Moviedetailed activity and OkHTTP" /></a>
+<iframe class="imgur-embed" width="100%" height="654" frameborder="0" src="http://i.imgur.com/pfL5Frw.gifv#embed"></iframe>
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
